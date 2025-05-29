@@ -2,6 +2,7 @@ package com.example.VibratuneMusicPlayerApp.model;
 
 import com.example.VibratuneMusicPlayerApp.Enum.Gender;
 import com.example.VibratuneMusicPlayerApp.Enum.RoleName;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,8 +53,12 @@ public class User implements UserDetails {
 
 
     // Relationship Setting
-    @OneToMany(mappedBy = "user")
-    private List<Role>  roles = new ArrayList<>(List.of(new Role(RoleName.LISTENER)));
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Role>  roles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Token>  tokens;
     @OneToMany(mappedBy = "user")
     private List<Playlist> createdPlaylists;
 
@@ -71,7 +76,7 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name ="user_saved_album", joinColumns = @JoinColumn(name ="album_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"))
     private List<Album>  savedAlbums;
-    public User(String username, String email, String password) {
+    public User(String email, String username, String password) {
         this.username = username;
         this.email = email;
         this.password = password;

@@ -1,6 +1,7 @@
 package com.example.VibratuneMusicPlayerApp.model;
 
 import com.example.VibratuneMusicPlayerApp.Enum.RoleName;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Role {
     private RoleName authorities;
     @ManyToOne
     @JoinColumn(name ="user_id")
+    @JsonBackReference
     private User user;
     public Role(RoleName  roleName){
         this.authorities =  roleName;
