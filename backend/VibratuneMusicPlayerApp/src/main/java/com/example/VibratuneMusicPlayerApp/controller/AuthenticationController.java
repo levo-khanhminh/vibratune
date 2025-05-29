@@ -8,8 +8,12 @@ import com.example.VibratuneMusicPlayerApp.model.User;
 import com.example.VibratuneMusicPlayerApp.response.AuthenticationResponse;
 import com.example.VibratuneMusicPlayerApp.service.AuthenticationService;
 import com.example.VibratuneMusicPlayerApp.service.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -81,5 +85,12 @@ public class AuthenticationController {
         }catch (Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        authenticationService.refreshToken(request, response);
     }
 }
