@@ -37,33 +37,6 @@ public class AuthenticationController {
 
     }
 
-//    @PostMapping("/users")
-//    public ResponseEntity<?>  addUser(@RequestBody UserDTO userDTO){
-//      try{
-//          User addedUser =  authenticationService.addUser(userDTO);
-//          return ResponseEntity.ok(addedUser);
-//      }catch(Exception ex) {
-//          return ResponseEntity.badRequest().body(ex.getMessage());
-//      }
-//    }
-//    @PostMapping("/artists")
-//    public ResponseEntity<?>  addArtist(@RequestBody AddArtistDTO addArtistDTO) {
-//            try {
-//                Artist artist   =  this.authenticationService.addArtist(addArtistDTO);
-//                return ResponseEntity.ok(artist);
-//            }catch (Exception exception){
-//                return ResponseEntity.badRequest().body(exception.getMessage());
-//            }
-//    }
-//    @PostMapping("/genres")
-//    public ResponseEntity<?>  addGenre(@RequestBody AddGenreDTO addGenreDTO) {
-//        try {
-//            Genre genre =  this.authenticationService.addGenre(addGenreDTO);
-//            return ResponseEntity.ok(genre);
-//        }catch (Exception exception){
-//            return ResponseEntity.badRequest().body(exception.getMessage());
-//        }
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginUserDTO loginUserDto){

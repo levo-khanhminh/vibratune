@@ -48,8 +48,8 @@ public class User implements UserDetails {
     private Gender gender;
     @Column(nullable = true)
     private String avatarUrl;
-
-
+    @Column(name ="full_name")
+    private String fullName;
     ///  Old Id for sample data
     private Long oldId;
     // Relationship Setting

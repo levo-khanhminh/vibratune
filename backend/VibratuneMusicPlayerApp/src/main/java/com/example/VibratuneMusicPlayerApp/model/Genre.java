@@ -21,6 +21,9 @@ public class Genre {
     private String name;
     private String description;
 
+    private String smallPicture;
+    private String bigPicture;
+    private String mediumPicture;
     ///  Old  Id for sample data
     private Long oldId;
     @OneToMany(mappedBy = "genre")

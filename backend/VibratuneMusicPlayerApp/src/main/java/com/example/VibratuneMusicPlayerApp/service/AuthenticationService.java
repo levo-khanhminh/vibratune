@@ -39,8 +39,6 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private  final JwtService jwtService;
     private final RoleRepository roleRepository;
-//    private final ArtistRepository artistRepository;
-//    private final GenreRepository genreRepository;
     public AuthenticationResponse authenticate (LoginUserDTO loginUserDTO){
         User user =  userRepository.findByEmail(loginUserDTO.getEmail()).orElse(null);
         if(user  == null){
@@ -239,35 +237,6 @@ public class AuthenticationService {
         }
     }
 
-//    public User addUser(UserDTO userDTO){
-//        User user = new User();
-//        user.setId(userDTO.getId());
-//        user.setEmail(userDTO.getEmail());
-//        user.setUsername(userDTO.getUsername());
-//        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//        user.setVerified(true);
-//        Role role = roleRepository.findById(1l).orElseThrow();
-//        Role aristRole =  roleRepository.findById(4l).orElseThrow();
-//        user.setRoles(List.of(role,aristRole));
-//        userRepository.save(user);
-//        return user;
-//    }
-//    public Artist addArtist(AddArtistDTO addArtistDTO){
-//        Long userId =  addArtistDTO.getUser_id();
-//        User baseUser  =  userRepository.findById(userId).orElseThrow();
-//        Artist artist =  new Artist();
-//        artist.setId(addArtistDTO.getId());
-//
-//        artist.setUser(baseUser);
-//        artist.setId(addArtistDTO.getId());
-//        artist.setName(addArtistDTO.getName());
-//        artist.setBigPictureUrl(addArtistDTO.getBigPictureUrl());
-//        artist.setMediumPictureUrl(addArtistDTO.getMediumPictureUrl());
-//        artist.setSmallPictureUrl(addArtistDTO.getSmallPictureUrl());
-//        artist.setNumberOfFans(addArtistDTO.getNumberOfFans());
-//      return  artistRepository.save(artist);
-//
-//    }
 
 
 

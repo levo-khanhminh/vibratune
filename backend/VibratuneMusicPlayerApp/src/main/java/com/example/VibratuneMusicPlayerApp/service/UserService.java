@@ -1,6 +1,7 @@
 package com.example.VibratuneMusicPlayerApp.service;
 
 import com.example.VibratuneMusicPlayerApp.DTO.CreatePlaylistDTO;
+import com.example.VibratuneMusicPlayerApp.DTO.UserProfileDTO;
 import com.example.VibratuneMusicPlayerApp.model.Playlist;
 import com.example.VibratuneMusicPlayerApp.model.Track;
 import com.example.VibratuneMusicPlayerApp.model.User;
@@ -38,31 +39,27 @@ public class UserService implements UserDetailsService {
             return user;
         }
     }
-//    public Playlist createPlaylist(Long userId,CreatePlaylistDTO createPlaylistDTO){
-//        User user =  this.userRepository.findById(userId).orElseThrow();
-//        String playlistName =  createPlaylistDTO.getName();
-//        List<Playlist> foundPLaylistWithGivenName = this.playlistRepository.findByName(playlistName);
-//        if(!foundPLaylistWithGivenName.isEmpty()) {
-//            throw new RuntimeException("Playlist name already exists");
-//        }
-//        Playlist playlist  = new Playlist();
-//        playlist.setName(playlistName);
-//        playlist.setUser(user);
-//        user.getCreatedPlaylists().add(playlist);
-//        userRepository.save(user);
-//        playlistRepository.save(playlist);
-//        return playlist;
-//    }
-//    public Set<Track> addUserFavouriteTrack(Long userId, Long trackId){
-//        User user  =  this.userRepository.findById(userId).orElse(null);
-//        if(user == null){
-//            throw new RuntimeException("User not found");
-//        }
-//        Track track =  this.trackRepository.findById(trackId).orElseThrow();
-//        user.getFavouriteTracks().add(track);
-//        track.getLikedUsers().add(user);
-//        this.userRepository.save(user);
-//        this.trackRepository.save(track);
-//        return user.getFavouriteTracks();
-//    }
+
+    public UserProfileDTO getUserProfile(Long id){
+        User user = this.userRepository.findById(id).orElseThrow();
+        UserProfileDTO userProfileDTO =  UserProfileDTO.builder().id(id)
+                .fullName(user.getFullName()).dateOfBirth(user.getDateOfBirth()).gender(user.getGender()).phoneNumber(user.getPhone()).build();
+        return userProfileDTO;
+    }
+
+    /// TODO  :  Try to handle edit profile with avatar file  and upload them to  the AWS S3 Busket
+    public UserProfileDTO editUserProfile(UserProfileDTO userProfileDTO){
+        User oldUser =  this.userRepository.findById(userProfileDTO.getId()).orElseThrow();
+        oldUser.setFullName(userProfileDTO.getFullName());
+        oldUser.setDateOfBirth(userProfileDTO.getDateOfBirth());
+        oldUser.setPhone(userProfileDTO.getPhoneNumber());
+        oldUser.setGender(userProfileDTO.getGender());
+        User user =  this.userRepository.save(oldUser);
+        return  UserProfileDTO.builder().id(user.getId())
+                .fullName(user.getFullName()).
+                 dateOfBirth(user.getDateOfBirth())
+                .gender(user.getGender())
+                .phoneNumber(user.getPhone())
+                .build();
+    }
 }

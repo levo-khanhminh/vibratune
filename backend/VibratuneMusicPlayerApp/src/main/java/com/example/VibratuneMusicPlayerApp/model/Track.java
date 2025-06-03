@@ -31,7 +31,6 @@ public class Track {
     private String trackUrl;
     @Column(columnDefinition = "LONGTEXT")
     private String trackPreviewUrl;
-
     ///  Old Id for sample data
     private Long oldId;
     @ManyToMany(mappedBy ="favouriteTracks")

@@ -21,6 +21,7 @@ public class Playlist {
     @Column(unique = true, nullable=false)
     private String name;
     private String coverImageUrl;
+    private boolean isPrivate;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

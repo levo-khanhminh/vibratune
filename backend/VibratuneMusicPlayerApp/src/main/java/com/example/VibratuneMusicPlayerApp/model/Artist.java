@@ -26,7 +26,6 @@ public class Artist  {
     private long numberOfFans;
     @Column(name="monthly_listeners")
     private int monthlyListeners;
-
     ///  Old Id for sample data
     private Long oldId;
     @OneToOne
