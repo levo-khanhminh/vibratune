@@ -1,9 +1,8 @@
 package com.example.VibratuneMusicPlayerApp.controller;
 
-import com.example.VibratuneMusicPlayerApp.DTO.LoginUserDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.RegisterUserDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.ResetPasswordDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.VerifyUserDTO;
+import com.example.VibratuneMusicPlayerApp.DTO.*;
+import com.example.VibratuneMusicPlayerApp.model.Artist;
+import com.example.VibratuneMusicPlayerApp.model.Genre;
 import com.example.VibratuneMusicPlayerApp.model.User;
 import com.example.VibratuneMusicPlayerApp.response.AuthenticationResponse;
 import com.example.VibratuneMusicPlayerApp.service.AuthenticationService;
@@ -21,11 +20,11 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     private final AuthenticationService authenticationService;
-
     public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDto) {
@@ -37,6 +36,34 @@ public class AuthenticationController {
        }
 
     }
+
+//    @PostMapping("/users")
+//    public ResponseEntity<?>  addUser(@RequestBody UserDTO userDTO){
+//      try{
+//          User addedUser =  authenticationService.addUser(userDTO);
+//          return ResponseEntity.ok(addedUser);
+//      }catch(Exception ex) {
+//          return ResponseEntity.badRequest().body(ex.getMessage());
+//      }
+//    }
+//    @PostMapping("/artists")
+//    public ResponseEntity<?>  addArtist(@RequestBody AddArtistDTO addArtistDTO) {
+//            try {
+//                Artist artist   =  this.authenticationService.addArtist(addArtistDTO);
+//                return ResponseEntity.ok(artist);
+//            }catch (Exception exception){
+//                return ResponseEntity.badRequest().body(exception.getMessage());
+//            }
+//    }
+//    @PostMapping("/genres")
+//    public ResponseEntity<?>  addGenre(@RequestBody AddGenreDTO addGenreDTO) {
+//        try {
+//            Genre genre =  this.authenticationService.addGenre(addGenreDTO);
+//            return ResponseEntity.ok(genre);
+//        }catch (Exception exception){
+//            return ResponseEntity.badRequest().body(exception.getMessage());
+//        }
+//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginUserDTO loginUserDto){

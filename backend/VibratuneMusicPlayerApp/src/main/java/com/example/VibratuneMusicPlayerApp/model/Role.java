@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name="roles")
 @Setter
@@ -16,16 +18,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Role {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private RoleName authorities;
-    @ManyToOne
-    @JoinColumn(name ="user_id")
+    private RoleName roleName;
+    @ManyToMany(mappedBy ="roles")
     @JsonBackReference
-    private User user;
+    private List<User> users;
     public Role(RoleName  roleName){
-        this.authorities =  roleName;
+        this.roleName =  roleName;
     }
 
 }

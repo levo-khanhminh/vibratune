@@ -4,8 +4,8 @@ import { StyleSheet, Text, View } from "react-native";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx tostart working on your app!</Text>
-      <Text>Welcome to the app</Text>
+      <Text>Hello welcome Vibratune App</Text>
+      <Text>Welcome to the Hahah</Text>
 
       <StatusBar style="auto" />
     </View>

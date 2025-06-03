@@ -9,3 +9,4 @@ public class VibratuneMusicPlayerAppApplication {
 		SpringApplication.run(VibratuneMusicPlayerAppApplication.class, args);
 	}
 }
+	

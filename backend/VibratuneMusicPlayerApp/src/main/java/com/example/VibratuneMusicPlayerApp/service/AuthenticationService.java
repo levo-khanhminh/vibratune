@@ -1,17 +1,10 @@
 package com.example.VibratuneMusicPlayerApp.service;
 
-import com.example.VibratuneMusicPlayerApp.DTO.LoginUserDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.RegisterUserDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.ResetPasswordDTO;
-import com.example.VibratuneMusicPlayerApp.DTO.VerifyUserDTO;
+import com.example.VibratuneMusicPlayerApp.DTO.*;
 import com.example.VibratuneMusicPlayerApp.Enum.RoleName;
 import com.example.VibratuneMusicPlayerApp.Enum.TokenType;
-import com.example.VibratuneMusicPlayerApp.model.Role;
-import com.example.VibratuneMusicPlayerApp.model.Token;
-import com.example.VibratuneMusicPlayerApp.model.User;
-import com.example.VibratuneMusicPlayerApp.repository.RoleRepository;
-import com.example.VibratuneMusicPlayerApp.repository.TokenRepository;
-import com.example.VibratuneMusicPlayerApp.repository.UserRepository;
+import com.example.VibratuneMusicPlayerApp.model.*;
+import com.example.VibratuneMusicPlayerApp.repository.*;
 import com.example.VibratuneMusicPlayerApp.response.AuthenticationResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwt;
@@ -24,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +39,8 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private  final JwtService jwtService;
     private final RoleRepository roleRepository;
+//    private final ArtistRepository artistRepository;
+//    private final GenreRepository genreRepository;
     public AuthenticationResponse authenticate (LoginUserDTO loginUserDTO){
         User user =  userRepository.findByEmail(loginUserDTO.getEmail()).orElse(null);
         if(user  == null){
@@ -75,9 +72,9 @@ public class AuthenticationService {
             user.setVerificationCode(generateVerificationCode());
             user.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
             sendVerificationEmail(user);
+            //Default Type
+            user.setRoles(List.of(roleRepository.findByRoleName(RoleName.LISTENER)));
             userRepository.save(user);
-            user.setRoles(List.of(saveUserRole(RoleName.LISTENER, user)));
-
             return user;
         }
     }
@@ -241,12 +238,39 @@ public class AuthenticationService {
             throw new RuntimeException("User not found with email - " + resetPasswordDTO.getEmail());
         }
     }
-    private Role saveUserRole(RoleName roleName, User user){
-        Role role  = new Role();
-        role.setUser(user);
-        role.setAuthorities(roleName);
-       return  roleRepository.save(role);
-    }
+
+//    public User addUser(UserDTO userDTO){
+//        User user = new User();
+//        user.setId(userDTO.getId());
+//        user.setEmail(userDTO.getEmail());
+//        user.setUsername(userDTO.getUsername());
+//        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+//        user.setVerified(true);
+//        Role role = roleRepository.findById(1l).orElseThrow();
+//        Role aristRole =  roleRepository.findById(4l).orElseThrow();
+//        user.setRoles(List.of(role,aristRole));
+//        userRepository.save(user);
+//        return user;
+//    }
+//    public Artist addArtist(AddArtistDTO addArtistDTO){
+//        Long userId =  addArtistDTO.getUser_id();
+//        User baseUser  =  userRepository.findById(userId).orElseThrow();
+//        Artist artist =  new Artist();
+//        artist.setId(addArtistDTO.getId());
+//
+//        artist.setUser(baseUser);
+//        artist.setId(addArtistDTO.getId());
+//        artist.setName(addArtistDTO.getName());
+//        artist.setBigPictureUrl(addArtistDTO.getBigPictureUrl());
+//        artist.setMediumPictureUrl(addArtistDTO.getMediumPictureUrl());
+//        artist.setSmallPictureUrl(addArtistDTO.getSmallPictureUrl());
+//        artist.setNumberOfFans(addArtistDTO.getNumberOfFans());
+//      return  artistRepository.save(artist);
+//
+//    }
+
+
+
     private String generateVerificationCode() {
         Random random = new Random();
         int code = random.nextInt(900000) + 100000;

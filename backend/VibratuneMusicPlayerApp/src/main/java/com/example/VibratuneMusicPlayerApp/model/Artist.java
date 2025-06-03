@@ -14,18 +14,27 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "user_id")
-public class Artist  extends  User{
+public class Artist  {
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String  biography;
-    private String avatarUrl;
+    private String bigPictureUrl;
+    private String mediumPictureUrl;
+    private String smallPictureUrl;
+    private long numberOfFans;
     @Column(name="monthly_listeners")
     private int monthlyListeners;
+
+    ///  Old Id for sample data
+    private Long oldId;
+    @OneToOne
+    @JoinColumn(name ="user_id")
+    private User user;
     @OneToMany(mappedBy = "artist")
     private Set<Track> tracks;
     @OneToMany(mappedBy = "artist")
     private List<Album> albums;
+
 }

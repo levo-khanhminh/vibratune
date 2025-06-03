@@ -18,23 +18,24 @@ import java.util.List;
 public class Album {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
     @Column(name  ="album_name")
     private String name;
     @Column(name ="album_description")
     private String description;
-    private LocalDate createdDate;
-    private LocalDate publishedDate;
-    private String coverImage;
+    private LocalDate releaseDate;
+    private String bigCoverImageUrl;
+    private String smallCoverImageUrl;
+    private String mediumCoverImageUrl;
+    ///  Old Id for sample data
+    private Long oldId;
     @ManyToOne
-    @JoinTable(name  ="artist_id")
+    @JoinColumn(name  ="artist_id")
     private Artist artist;
-    @ManyToMany(cascade =  CascadeType.ALL)
-    @JoinTable(name ="album_tracks",
-            joinColumns = @JoinColumn(name  ="track_id" , referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name ="album_id" ,referencedColumnName = "id")
-    )
+    @OneToMany(mappedBy = "album")
     private List<Track> albumTracks;
-
+    @ManyToOne
+    @JoinColumn(name  ="genre_id")
+    private Genre genre;
 }

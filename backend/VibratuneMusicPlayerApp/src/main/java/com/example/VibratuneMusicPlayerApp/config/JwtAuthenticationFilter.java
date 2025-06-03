@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -30,14 +31,13 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
     private final HandlerExceptionResolver handleExceptionResolver;
     private final JwtService jwtService;
     private final UserService userService;
+    @Autowired
     public JwtAuthenticationFilter(
             JwtService jwtService,
-
             HandlerExceptionResolver handlerExceptionResolver,
             UserService userService
     ) {
         this.jwtService = jwtService;
-
         this. handleExceptionResolver = handlerExceptionResolver;
         this.userService = userService;
     }

@@ -22,11 +22,9 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable=false)
     private String username;
@@ -52,28 +50,27 @@ public class User implements UserDetails {
     private String avatarUrl;
 
 
-
+    ///  Old Id for sample data
+    private Long oldId;
     // Relationship Setting
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @ManyToMany(cascade =  CascadeType.ALL, fetch =  FetchType.EAGER)
+    @JoinTable(name ="user_roles" , joinColumns = @JoinColumn(name ="user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name ="role_id", referencedColumnName = "id"))
     @JsonManagedReference
     private List<Role>  roles;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Token>  tokens;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Playlist> createdPlaylists;
-
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "user_saved_playlist" , joinColumns = @JoinColumn(name = "playlist_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<Playlist> savedPlaylists;
-
     @ManyToMany(cascade  = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name="user_favourite_tracks", joinColumns = @JoinColumn(name="track_id", referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"))
     private Set<Track> favouriteTracks;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(role ->  new SimpleGrantedAuthority(role.getAuthorities().name())).toList();
+        return roles.stream().map(role ->  new SimpleGrantedAuthority(role.getRoleName().name())).toList();
     }
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name ="user_saved_album", joinColumns = @JoinColumn(name ="album_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"))

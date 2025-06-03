@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Playlist {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable=false)
     private String name;
@@ -25,5 +25,5 @@ public class Playlist {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToMany(mappedBy = "savedPlaylists")
-    private List<User> users;
+    private List<User> savedUsers;
 }

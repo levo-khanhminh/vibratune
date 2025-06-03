@@ -16,11 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Genre {
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    @ManyToMany(mappedBy = "trackGenres")
-    private List<Track> tracks;
+
+    ///  Old  Id for sample data
+    private Long oldId;
+    @OneToMany(mappedBy = "genre")
+    private List<Album> albums;
 
 }
