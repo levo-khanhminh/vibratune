@@ -4,26 +4,21 @@ import com.example.VibratuneMusicPlayerApp.DTO.ArtistDTO;
 import com.example.VibratuneMusicPlayerApp.service.ArtistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/artists")
 @RequiredArgsConstructor
 public class ArtistController {
     private final ArtistService artistService;
-
-
-
-    @GetMapping("/artists")
+    @GetMapping("/")
     public List<ArtistDTO> getAllArtists(){
        return  this.artistService.getAllArtists();
     }
 
-    @GetMapping("/artists/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getArtistById(@PathVariable Long id){
        try {
            ArtistDTO artistDTO =  this.artistService.getArtistById(id);
@@ -31,6 +26,10 @@ public class ArtistController {
        }catch(Exception ex){
            return ResponseEntity.badRequest().body(ex.getMessage());
        }
+    }
+    @GetMapping("/top")
+    public ResponseEntity<?> getTopMonthlyListenersArtists(@RequestParam(name="count")  int count){
+        return ResponseEntity.ok(this.artistService.getTopMonthlyArtists(count));
     }
 
 }

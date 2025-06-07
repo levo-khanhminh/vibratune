@@ -22,7 +22,7 @@ public class Role {
     private Long id;
     @Enumerated(EnumType.STRING)
     private RoleName roleName;
-    @ManyToMany(mappedBy ="roles")
+    @ManyToMany(mappedBy ="roles",fetch =  FetchType.EAGER)
     @JsonBackReference
     private List<User> users;
     public Role(RoleName  roleName){

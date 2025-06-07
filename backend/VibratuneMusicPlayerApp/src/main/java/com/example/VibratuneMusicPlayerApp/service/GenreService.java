@@ -18,4 +18,9 @@ public class GenreService {
                            DTOMapper.mapToGenreDTO(g)
                     ).toList();
     }
+
+    public GenreDTO  getGenreById(Long id){
+        Genre genre  = this.genreRepository.findById(id).orElseThrow();
+        return DTOMapper.mapToGenreDTO(genre);
+    }
 }

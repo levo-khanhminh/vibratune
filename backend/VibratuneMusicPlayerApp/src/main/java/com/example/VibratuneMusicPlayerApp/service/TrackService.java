@@ -22,6 +22,9 @@ public class TrackService {
         Track track = trackRepository.findById(id).orElseThrow();
         return DTOMapper.mapToTrackDTO(track);
     }
+    public Track getTrack(Long id){
+        return this.trackRepository.findById(id).orElse(null);
+    }
     public List<TrackDTO> getAllTracks(){
       return  this.trackRepository.findAll().stream().map(DTOMapper::mapToTrackDTO).toList();
     }

@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@RequestMapping("/tracks")
 public class TrackController {
     private final TrackService trackService;
     public TrackController(TrackService trackService){
         this.trackService=trackService;
     }
 
-    @GetMapping("/tracks")
+    @GetMapping("/")
     public List<TrackDTO>  getAllTracks(){
         return this.trackService.getAllTracks();
     }
 
-    @GetMapping("/tracks/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getTrackById(@PathVariable Long id){
        try {
            TrackDTO trackDTO   =  this.trackService.getTrackById(id);
@@ -29,34 +30,34 @@ public class TrackController {
            return ResponseEntity.badRequest().body(ex.getMessage());
        }
     }
-    @GetMapping("/tracks/top")
+    @GetMapping("/top")
     public ResponseEntity<?>  getTopTracks(@RequestParam(name="count") int count){
         return ResponseEntity.ok(this.trackService.getTopTracks(count));
     }
-    @GetMapping("/tracks/artist")
+    @GetMapping("/artist")
     public ResponseEntity<?>  getTracksByArtists(@RequestParam(name="name") String name){
         return ResponseEntity.ok(this.trackService.getAllTracksByArtist(name));
     }
 
-    @GetMapping("/tracks/album")
+    @GetMapping("/album")
     public ResponseEntity<?>  getTracksByAlbum(@RequestParam(name="name")  String name){
         return ResponseEntity.ok(this.trackService.getAllTracksByAlbum(name));
     }
-    @GetMapping("/tracks/search")
+    @GetMapping("/search")
     public ResponseEntity<?> getTracksByTitle(@RequestParam(name="title")  String title){
         return ResponseEntity.ok(this.trackService.getAllTracksByTitle(title));
     }
 
-    @GetMapping("/tracks/genres/{genreId}")
+    @GetMapping("/genres/{genreId}")
     public ResponseEntity<List<TrackDTO>> getTracksByGenreId(@PathVariable(name="genreId")  Long genreId){
         return ResponseEntity.ok(this.trackService.getAllTracksByGenreId(genreId));
     }
-    @GetMapping("/tracks/albums/{albumId}")
+    @GetMapping("/albums/{albumId}")
     public ResponseEntity<List<TrackDTO>> getTracksByAlbumId(@PathVariable(name="albumId")  Long albumId){
         return ResponseEntity.ok(this.trackService.getAllTracksByAlbumId(albumId));
     }
 
-    @GetMapping("/tracks/artists/{artistId}")
+    @GetMapping("/artists/{artistId}")
     public ResponseEntity<List<TrackDTO>> getTracksByArtistId(@PathVariable(name="artistId")  Long artistId){
         return ResponseEntity.ok(this.trackService.getAllTracksByArtistId(artistId));
     }

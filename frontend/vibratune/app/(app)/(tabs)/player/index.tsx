@@ -1,0 +1,231 @@
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import Screen from '../../../../src/components/Screen';  
+
+const { width } = Dimensions.get('window');
+
+export default function NowPlayingScreen() {
+  const router = useRouter();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  return (
+    <Screen>
+      <BlurView intensity={20} tint="dark" style={StyleSheet.absoluteFill} />
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="chevron-down" size={32} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Now Playing</Text>
+          <TouchableOpacity 
+            style={styles.queueButton}
+            onPress={() => router.push('(app)/(tabs)/player/queue')}
+          >
+            <Ionicons name="list" size={28} color="#fff" />
+            <View style={styles.queueCount}>
+              <Text style={styles.queueCountText}>3</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Album Art */}
+        <View style={styles.artworkContainer}>
+          <Image
+            source={require('../../../../assets/images/artist_taylor_swift.png')}
+            style={styles.artwork}
+          />
+          <BlurView intensity={60} tint="dark" style={styles.artworkOverlay}>
+            <View style={styles.playingIndicator}>
+              <View style={[styles.bar, styles.bar1]} />
+              <View style={[styles.bar, styles.bar2]} />
+              <View style={[styles.bar, styles.bar3]} />
+            </View>
+          </BlurView>
+        </View>
+
+        {/* Track Info */}
+        <View style={styles.trackInfo}>
+          <Text style={styles.trackTitle} numberOfLines={1}>
+            Lover
+          </Text>
+          <Text style={styles.artistName} numberOfLines={1}>
+           Taylor Swift
+          </Text>
+        </View>
+
+        {/* Progress Bar */}
+        <View style={styles.progressContainer}>
+          <View style={styles.progressBar}>
+            <View style={[styles.progress, { width: '30%' }]} />
+          </View>
+          <View style={styles.timeContainer}>
+            <Text style={styles.timeText}>1:23</Text>
+            <Text style={styles.timeText}>3:45</Text>
+          </View>
+        </View>
+
+        {/* Controls */}
+        <View style={styles.controls}>
+          <TouchableOpacity style={styles.controlButton}>
+            <Ionicons name="shuffle" size={24} color="rgba(255,255,255,0.8)" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.controlButton}>
+            <Ionicons name="play-skip-back" size={32} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.playButton}
+            onPress={() => setIsPlaying(!isPlaying)}
+          >
+            <Ionicons 
+              name={isPlaying ? "pause" : "play"} 
+              size={32} 
+              color="#000" 
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.controlButton}>
+            <Ionicons name="play-skip-forward" size={32} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.controlButton}>
+            <Ionicons name="repeat" size={24} color="rgba(255,255,255,0.8)" />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 50,
+  },
+  headerTitle: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: '600',
+  },
+  queueButton: {
+    position: 'relative',
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  queueCount: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: '#9FE870',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  queueCountText: {
+    color: '#000',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  artworkContainer: {
+    width: width - 80,
+    aspectRatio: 1,
+    alignSelf: 'center',
+    marginTop: 40,
+    borderRadius: width,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  artwork: {
+    width: '100%',
+    height: '100%',
+  },
+  artworkOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playingIndicator: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    height: 20,
+  },
+  bar: {
+    width: 3,
+    backgroundColor: '#9FE870',
+    marginHorizontal: 1,
+    borderRadius: 1,
+  },
+  bar1: { height: 10 },
+  bar2: { height: 16 },
+  bar3: { height: 8 },
+  trackInfo: {
+    alignItems: 'center',
+    marginTop: 32,
+  },
+  trackTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#fff',
+    marginBottom: 8,
+  },
+  artistName: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.7)',
+  },
+  progressContainer: {
+    marginTop: 32,
+  },
+  progressBar: {
+    width: '100%',
+    height: 4,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+    borderRadius: 2,
+  },
+  progress: {
+    height: '100%',
+    backgroundColor: '#9FE870',
+    borderRadius: 2,
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  timeText: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.6)',
+  },
+  controls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 24,
+    paddingHorizontal: 20,
+  },
+  controlButton: {
+    padding: 12,
+  },
+  playButton: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#9FE870',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+}); 

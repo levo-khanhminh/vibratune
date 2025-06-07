@@ -63,17 +63,20 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Playlist> createdPlaylists;
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name = "user_saved_playlist" , joinColumns = @JoinColumn(name = "playlist_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JoinTable(name = "user_saved_playlist" , joinColumns = @JoinColumn(name = "user_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "playlist_id", referencedColumnName = "id"))
+    @JsonManagedReference
     private Set<Playlist> savedPlaylists;
     @ManyToMany(cascade  = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name="user_favourite_tracks", joinColumns = @JoinColumn(name="track_id", referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"))
+    @JoinTable(name="user_favourite_tracks", joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),inverseJoinColumns = @JoinColumn(name ="track_id" , referencedColumnName = "id"))
+    @JsonManagedReference
     private Set<Track> favouriteTracks;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role ->  new SimpleGrantedAuthority(role.getRoleName().name())).toList();
     }
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JoinTable(name ="user_saved_album", joinColumns = @JoinColumn(name ="album_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"))
+    @JoinTable(name ="user_saved_album", joinColumns = @JoinColumn(name ="user_id" , referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name ="album_id" , referencedColumnName = "id"))
+    @JsonManagedReference
     private List<Album>  savedAlbums;
     public User(String email, String username, String password) {
         this.username = username;

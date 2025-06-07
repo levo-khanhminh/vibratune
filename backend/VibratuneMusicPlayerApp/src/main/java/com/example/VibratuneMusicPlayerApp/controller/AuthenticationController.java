@@ -24,8 +24,6 @@ public class AuthenticationController {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
-
-
     @PostMapping("/signup")
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDto) {
        try{
@@ -92,5 +90,14 @@ public class AuthenticationController {
             HttpServletResponse response
     ) throws IOException {
         authenticationService.refreshToken(request, response);
+    }
+    @GetMapping("/logout")
+    public ResponseEntity<?> logOut(){
+      try {
+          this.authenticationService.logOut();
+          return ResponseEntity.ok("Successfully logout");
+      }catch (Exception ex){
+          return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 }

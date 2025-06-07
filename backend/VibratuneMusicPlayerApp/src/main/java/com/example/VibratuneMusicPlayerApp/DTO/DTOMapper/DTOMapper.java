@@ -1,10 +1,11 @@
 package com.example.VibratuneMusicPlayerApp.DTO.DTOMapper;
 
 import com.example.VibratuneMusicPlayerApp.DTO.*;
-import com.example.VibratuneMusicPlayerApp.model.Album;
-import com.example.VibratuneMusicPlayerApp.model.Artist;
-import com.example.VibratuneMusicPlayerApp.model.Genre;
-import com.example.VibratuneMusicPlayerApp.model.Track;
+import com.example.VibratuneMusicPlayerApp.model.*;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DTOMapper {
     public static ArtistDTO mapToArtistDTO(Artist artist) {
@@ -63,6 +64,42 @@ public class DTOMapper {
                 .bigCoverImageUrl(album.getBigCoverImageUrl())
                 .mediumCoverImageUrl(album.getMediumCoverImageUrl())
                 .smallCoverImageUrl(album.getSmallCoverImageUrl())
+                .build();
+    }
+    public static PlaylistDTO mapToPlaylistDTO(Playlist playlist){
+        return PlaylistDTO.builder()
+                .id(playlist.getId())
+                .name(playlist.getName())
+                .isPrivate(playlist.isPrivate())
+                .coverImageUrl(playlist.getCoverImageUrl())
+                .tracks(Optional.ofNullable(playlist.getPlaylistTracks()).orElse(Collections.emptyList())
+                        .stream().map(DTOMapper::mapToTrackDTO).toList())
+                .build();
+    }
+    public static UserSavedPlaylistDTO mapToUserSavedPlaylistDTO(User user){
+        return UserSavedPlaylistDTO.builder()
+                .userId(user.getId())
+                .playlists(user.getSavedPlaylists().stream().map(DTOMapper::mapToPlaylistDTO).toList())
+                .build();
+    }
+    public static  UserSavedAlbumDTO mapToUserSavedAlbumDTO(User user){
+        return UserSavedAlbumDTO.builder()
+                .userId(user.getId())
+                .savedAlbums(user.getSavedAlbums().stream().map(DTOMapper::mapToAlbumDTO).toList())
+                .build();
+    }
+    public static UserInfoDTO mapToUserInfoDTO(User user){
+        return UserInfoDTO.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .gender(user.getGender())
+                .dateOfBirth(user.getDateOfBirth())
+                .phoneNumber(user.getPhone())
+                .roles(user.getRoles())
+                .createdPlaylists(user.getCreatedPlaylists().stream().map(DTOMapper::mapToPlaylistDTO).toList())
+                .favouriteTracks(user.getFavouriteTracks().stream().map(DTOMapper::mapToTrackDTO).toList())
+                .savedPlaylists(user.getSavedPlaylists().stream().map(DTOMapper::mapToPlaylistDTO).collect(Collectors.toSet()))
+                .savedAlbums(user.getSavedAlbums().stream().map(DTOMapper::mapToAlbumDTO).collect(Collectors.toSet()))
                 .build();
     }
 }

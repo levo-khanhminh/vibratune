@@ -1,5 +1,7 @@
 package com.example.VibratuneMusicPlayerApp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +32,13 @@ public class Artist  {
     private Long oldId;
     @OneToOne
     @JoinColumn(name ="user_id")
+    @JsonBackReference
     private User user;
     @OneToMany(mappedBy = "artist")
+    @JsonManagedReference
     private Set<Track> tracks;
     @OneToMany(mappedBy = "artist")
+    @JsonManagedReference
     private List<Album> albums;
 
 }

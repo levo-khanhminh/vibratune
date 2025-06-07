@@ -31,9 +31,9 @@ public class ArtistService {
                 ).toList();
     }
 
-    public List<ArtistDTO> getTopMonthlyArtists() {
+    public List<ArtistDTO> getTopMonthlyArtists(int count) {
         return this.artistRepository
-                .findAll(PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "monthlyListeners")))
+                .findAll(PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "monthlyListeners")))
                 .getContent()
                 .stream()
                 .map(artist -> DTOMapper.mapToArtistDTO(artist)

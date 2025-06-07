@@ -8,5 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CreatePlaylistDTO {
+    private Long userId;
     private String name;
+    private boolean isPrivate;
 }

@@ -1,5 +1,6 @@
 package com.example.VibratuneMusicPlayerApp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,9 @@ public class Album {
     private List<Track> albumTracks;
     @ManyToOne
     @JoinColumn(name  ="genre_id")
+    @JsonBackReference
     private Genre genre;
+    @ManyToMany(mappedBy = "savedAlbums", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private List<User> savedUsers;
 }
