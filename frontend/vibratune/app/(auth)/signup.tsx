@@ -41,9 +41,9 @@ export default function SignupScreen() {
   const onSubmit = async (data: FormData) => {
     console.log(data);
     try {
-      // const res = await signUp(data.email, data.password, data.username);
-      // router.push(`/verify?type=email-verification?email=${data.email}`);
-      // notify("Signup successful", "success");
+       const res = await signUp(data.email, data.password, data.username);
+       router.push(`/verify?type=email-verification?email=${data.email}`);
+      notify("Signup successful", "success");
       router.push(`/(auth)/verify?type=email-verification&email=` + data.email);
     } catch (error: any) {
       notify(error.message, "error");
