@@ -1,20 +1,21 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TextInput, 
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { Ionicons } from '@expo/vector-icons';
-import { useNotification } from '../../src/context/NotificationContext';
+  SafeAreaView,
+} from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { Ionicons } from "@expo/vector-icons";
+import { useNotification } from "../../src/context/NotificationContext";
+import { useAuth } from "../../src/context/AuthenContext";
 
 interface FormData {
   newPassword: string;
@@ -27,35 +28,50 @@ export default function ResetPasswordScreen() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { control, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormData>({
     defaultValues: {
-      newPassword: '',
-      confirmPassword: ''
-    }
+      newPassword: "",
+      confirmPassword: "",
+    },
   });
 
-  const newPassword = watch('newPassword');
+  const newPassword = watch("newPassword");
+  const { verifyResetPassword } = useAuth();
+  const params = useLocalSearchParams();
 
+  const email = Array.isArray(params.email) ? params.email[0] : params.email;
+  const otp = Array.isArray(params.otp) ? params.otp[0] : params.otp;
   const onSubmit = async (data: FormData) => {
     try {
-      // Here you would normally make an API call to reset the password
-      notify('Password reset successful!', 'success');
-      router.replace('/(auth)/login');
-    } catch (error) {
-      notify('Password reset failed. Please try again.', 'error');
+      if (email && otp) {
+        console.log(email);
+        console.log(otp);
+        await verifyResetPassword(otp, data.newPassword, email);
+        notify("Password reset successful!", "success");
+      }
+      router.push("/(auth)/login");
+    } catch (error: any) {
+      notify(
+        "Password reset failed. Please try again, error : " + error.message,
+        "error"
+      );
+      router.replace("/(auth)/reset-password");
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingView}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.content}>
-           
-
             <View style={styles.header}>
               <Text style={styles.title}>Reset password</Text>
             </View>
@@ -64,17 +80,27 @@ export default function ResetPasswordScreen() {
               <Controller
                 control={control}
                 rules={{
-                  required: 'New password is required',
+                  required: "New password is required",
                   minLength: {
                     value: 6,
-                    message: 'Password must be at least 6 characters'
-                  }
+                    message: "Password must be at least 6 characters",
+                  },
                 }}
                 name="newPassword"
                 render={({ field: { onChange, value } }) => (
                   <View style={styles.inputWrapper}>
-                    <View style={[styles.inputContainer, errors.newPassword && styles.inputError]}>
-                      <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
+                    <View
+                      style={[
+                        styles.inputContainer,
+                        errors.newPassword && styles.inputError,
+                      ]}
+                    >
+                      <Ionicons
+                        name="lock-closed-outline"
+                        size={20}
+                        color="#666"
+                        style={styles.inputIcon}
+                      />
                       <TextInput
                         style={styles.input}
                         placeholder="New password...."
@@ -83,18 +109,24 @@ export default function ResetPasswordScreen() {
                         onChangeText={onChange}
                         value={value}
                       />
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         style={styles.eyeIcon}
                         onPress={() => setShowNewPassword(!showNewPassword)}
                       >
-                        <Ionicons 
-                          name={showNewPassword ? "eye-outline" : "eye-off-outline"} 
-                          size={20} 
-                          color="#666" 
+                        <Ionicons
+                          name={
+                            showNewPassword ? "eye-outline" : "eye-off-outline"
+                          }
+                          size={20}
+                          color="#666"
                         />
                       </TouchableOpacity>
                     </View>
-                    {errors.newPassword && <Text style={styles.errorText}>{errors.newPassword.message}</Text>}
+                    {errors.newPassword && (
+                      <Text style={styles.errorText}>
+                        {errors.newPassword.message}
+                      </Text>
+                    )}
                   </View>
                 )}
               />
@@ -102,14 +134,25 @@ export default function ResetPasswordScreen() {
               <Controller
                 control={control}
                 rules={{
-                  required: 'Please confirm your password',
-                  validate: value => value === newPassword || 'Passwords do not match'
+                  required: "Please confirm your password",
+                  validate: (value) =>
+                    value === newPassword || "Passwords do not match",
                 }}
                 name="confirmPassword"
                 render={({ field: { onChange, value } }) => (
                   <View style={styles.inputWrapper}>
-                    <View style={[styles.inputContainer, errors.confirmPassword && styles.inputError]}>
-                      <Ionicons name="lock-closed-outline" size={20} color="#666" style={styles.inputIcon} />
+                    <View
+                      style={[
+                        styles.inputContainer,
+                        errors.confirmPassword && styles.inputError,
+                      ]}
+                    >
+                      <Ionicons
+                        name="lock-closed-outline"
+                        size={20}
+                        color="#666"
+                        style={styles.inputIcon}
+                      />
                       <TextInput
                         style={styles.input}
                         placeholder="Confirm password...."
@@ -118,23 +161,33 @@ export default function ResetPasswordScreen() {
                         onChangeText={onChange}
                         value={value}
                       />
-                      <TouchableOpacity 
+                      <TouchableOpacity
                         style={styles.eyeIcon}
-                        onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onPress={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                       >
-                        <Ionicons 
-                          name={showConfirmPassword ? "eye-outline" : "eye-off-outline"} 
-                          size={20} 
-                          color="#666" 
+                        <Ionicons
+                          name={
+                            showConfirmPassword
+                              ? "eye-outline"
+                              : "eye-off-outline"
+                          }
+                          size={20}
+                          color="#666"
                         />
                       </TouchableOpacity>
                     </View>
-                    {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+                    {errors.confirmPassword && (
+                      <Text style={styles.errorText}>
+                        {errors.confirmPassword.message}
+                      </Text>
+                    )}
                   </View>
                 )}
               />
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.resetButton}
                 onPress={handleSubmit(onSubmit)}
               >
@@ -159,13 +212,13 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 150,
-    alignItems: 'center',
+    alignItems: "center",
   },
   backButton: {
     width: 40,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 20,
   },
   header: {
@@ -173,26 +226,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '800',
-    color: 'white',
+    fontWeight: "800",
+    color: "white",
     marginBottom: 12,
     letterSpacing: 0.5,
   },
   formContainer: {
-    width: '100%',
+    width: "100%",
   },
   inputWrapper: {
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
     borderRadius: 16,
     paddingHorizontal: 20,
     height: 55,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -201,7 +254,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderColor: "rgba(255, 255, 255, 0.2)",
   },
   inputIcon: {
     marginRight: 12,
@@ -209,34 +262,34 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: '#333',
+    color: "#333",
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   eyeIcon: {
     padding: 8,
     opacity: 0.7,
   },
   inputError: {
-    borderColor: '#ff6b6b',
+    borderColor: "#ff6b6b",
     borderWidth: 1.5,
   },
   errorText: {
-    color: '#ff6b6b',
+    color: "#ff6b6b",
     fontSize: 12,
     marginTop: 6,
     marginLeft: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   resetButton: {
-    backgroundColor: '#1B4372',
+    backgroundColor: "#1B4372",
     borderRadius: 16,
     height: 55,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
     marginTop: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 4,
@@ -246,9 +299,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   resetButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 17,
-    fontWeight: '600',
+    fontWeight: "600",
     letterSpacing: 0.5,
   },
-}); 
+});

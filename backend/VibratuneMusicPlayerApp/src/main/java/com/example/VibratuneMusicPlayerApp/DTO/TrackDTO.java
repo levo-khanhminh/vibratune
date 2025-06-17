@@ -16,4 +16,5 @@ public class TrackDTO {
     private int duration;
     private int trackRank;
     private String trackPreviewUrl;
+    private ArtistDTO artist;
 }

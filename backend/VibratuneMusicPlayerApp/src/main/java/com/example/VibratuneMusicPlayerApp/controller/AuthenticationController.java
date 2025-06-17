@@ -58,9 +58,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/resend")
-    public ResponseEntity<?> resendVerificationCode(@RequestParam String email) {
+    public ResponseEntity<?> resendVerificationCode(@RequestParam(name ="email") String email, @RequestParam(name="type") String type) {
         try {
-            authenticationService.resendVerificationCode(email);
+            if(type.equals("email-verification")){
+                authenticationService.resendVerificationCode(email);
+            }else{
+                authenticationService.resendVerificationResetPasswordCode(email);
+            }
             return ResponseEntity.ok("Verification code sent");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

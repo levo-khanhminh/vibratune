@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, Animated, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '../constants/colors';
+import React, { useEffect, useRef } from "react";
+import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "../constants/colors";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
-type NotificationType = 'success' | 'error' | 'info';
+type NotificationType = "success" | "error" | "info";
 
 interface NotificationProps {
   visible: boolean;
@@ -16,11 +16,11 @@ interface NotificationProps {
 
 export const Notification: React.FC<NotificationProps> = ({
   visible,
-  type = 'success',
+  type = "success",
   message,
   onHide,
 }) => {
-  const slideAnim = new Animated.Value(200);
+  const slideAnim = useRef(new Animated.Value(200)).current;
 
   useEffect(() => {
     if (visible) {
@@ -54,15 +54,15 @@ export const Notification: React.FC<NotificationProps> = ({
 
   const getIcon = () => {
     switch (type) {
-      case 'success':
+      case "success":
         return <Ionicons name="checkmark-circle" size={40} color="green" />;
-      case 'error':
+      case "error":
         return <Ionicons name="alert-circle" size={40} color="red" />;
-      case 'info':
+      case "info":
         return <Ionicons name="information-circle" size={40} color="blue" />;
     }
   };
-
+  if (!message) return null;
   return (
     <Animated.View
       style={[
@@ -73,9 +73,7 @@ export const Notification: React.FC<NotificationProps> = ({
       ]}
     >
       <View style={styles.content}>
-        <View style={styles.iconContainer}>
-          {getIcon()}
-        </View>
+        <View style={styles.iconContainer}>{getIcon()}</View>
         <Text style={styles.message}>{message}</Text>
       </View>
     </Animated.View>
@@ -84,8 +82,8 @@ export const Notification: React.FC<NotificationProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    width: '100%',
+    position: "absolute",
+    width: "100%",
     height: 300,
     bottom: -100,
     left: 0,
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#183353D9",
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: -4,
@@ -106,18 +104,18 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingTop: 30,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 12,
   },
   iconContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 50,
     padding: 12,
   },
   message: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
   },
-}); 
+});

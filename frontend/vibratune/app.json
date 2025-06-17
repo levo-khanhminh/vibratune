@@ -9,7 +9,7 @@
     "newArchEnabled": true,
     "scheme": "vibratune",
     "splash": {
-      "image": "./assets/images/logo.png",
+      "image": "./assets/images/vibratune-logo-2.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#0A1A2F"
     },
@@ -19,11 +19,24 @@
     "android": {
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo-3.jpg",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.khanhminh.vibratune"
+      "package": "com.khanhminh.vibratune",
+      "plugins": [
+        [
+          "expo-build-properties",
+          {
+            "android": {
+              "kotlinVersion": "1.9.22",
+              "compileSdkVersion": 35,
+              "targetSdkVersion": 34,
+              "buildToolsVersion": "35.0.0"
+            }
+          }
+        ]
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

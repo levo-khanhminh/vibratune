@@ -1,6 +1,7 @@
 package com.example.VibratuneMusicPlayerApp.controller;
 
 import com.example.VibratuneMusicPlayerApp.DTO.ArtistDTO;
+import com.example.VibratuneMusicPlayerApp.DTO.DetailArtistDTO;
 import com.example.VibratuneMusicPlayerApp.service.ArtistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,8 @@ public class ArtistController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getArtistById(@PathVariable Long id){
        try {
-           ArtistDTO artistDTO =  this.artistService.getArtistById(id);
-           return ResponseEntity.ok(artistDTO);
+           DetailArtistDTO dto =  this.artistService.getArtistById(id);
+           return ResponseEntity.ok(dto);
        }catch(Exception ex){
            return ResponseEntity.badRequest().body(ex.getMessage());
        }

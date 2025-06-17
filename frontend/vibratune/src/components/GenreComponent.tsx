@@ -1,24 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Genre } from "../types/type";
+import { getRandomHexColor } from "../utils/random";
 
-interface GenreComponentProps {
-  name: string;
-  color1: string;
-  color2: string;
+interface GenreComponentProps extends Genre {
+  color1?: string;
+  color2?: string;
   onPress?: () => void;
 }
 
-export default function GenreComponent({ 
-  name, 
-  color1, 
-  color2, 
-  onPress 
+export default function GenreComponent({
+  name,
+  color1,
+  color2,
+  onPress,
 }: GenreComponentProps) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <LinearGradient
-        colors={[color1, color2]}
+        colors={[color1 || getRandomHexColor(), color2 || getRandomHexColor()]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}
@@ -31,20 +32,20 @@ export default function GenreComponent({
 
 const styles = StyleSheet.create({
   container: {
-    width: '48%',
+    width: "48%",
     aspectRatio: 1.8,
     marginBottom: 10,
     borderRadius: 8,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   gradient: {
     flex: 1,
     padding: 16,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   name: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-}); 
+});

@@ -25,8 +25,8 @@ public class AlbumService {
     public List<AlbumDTO> getAllAlbums(){
         return this.albumRepository.findAll().stream().map(DTOMapper::mapToAlbumDTO).toList();
     }
-    public List<TopAlbumDTO> getTopAlbums(int top){
-      return  albumRepository.findAll(PageRequest.of(0, top)).getContent().stream().map(DTOMapper::mapToTopAlbumDTO).toList();
+    public List<AlbumDTO> getTopAlbums(int top){
+      return  albumRepository.findAll(PageRequest.of(0, top)).getContent().stream().map(DTOMapper::mapToAlbumDTO).toList();
     }
 
 

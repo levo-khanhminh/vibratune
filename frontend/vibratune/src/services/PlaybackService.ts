@@ -1,4 +1,4 @@
-import TrackPlayer, { Event, State } from 'react-native-track-player';
+import TrackPlayer, { Event, State } from "react-native-track-player";
 
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
@@ -14,6 +14,7 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.RemoteNext, () => {
+    console.log("Is skipping to next");
     TrackPlayer.skipToNext();
   });
 
@@ -26,10 +27,10 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.PlaybackState, (state) => {
-    console.log('Playback State Change:', state);
+    console.log("Playback State Change:", state);
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, (error) => {
-    console.warn('An error occurred while playing:', error);
+    console.warn("An error occurred while playing:", error);
   });
-} 
+}

@@ -3,6 +3,7 @@ package com.example.VibratuneMusicPlayerApp.service;
 import com.example.VibratuneMusicPlayerApp.DTO.AddArtistDTO;
 import com.example.VibratuneMusicPlayerApp.DTO.ArtistDTO;
 import com.example.VibratuneMusicPlayerApp.DTO.DTOMapper.DTOMapper;
+import com.example.VibratuneMusicPlayerApp.DTO.DetailArtistDTO;
 import com.example.VibratuneMusicPlayerApp.model.Artist;
 import com.example.VibratuneMusicPlayerApp.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public class ArtistService {
     }
 
 
-    public ArtistDTO  getArtistById(Long id){
+    public DetailArtistDTO getArtistById(Long id){
         Artist artist =  this.artistRepository.findById(id).orElseThrow();
-        return DTOMapper.mapToArtistDTO(artist);
+        return DTOMapper.mapToDetailArtistDTO(artist);
     }
     public List<ArtistDTO>  getAllArtists(){
         return this.artistRepository.findAll().stream().map(artist  ->

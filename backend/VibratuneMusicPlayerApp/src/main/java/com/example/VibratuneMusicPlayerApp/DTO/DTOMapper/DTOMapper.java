@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class DTOMapper {
     public static ArtistDTO mapToArtistDTO(Artist artist) {
         return ArtistDTO.builder()
+                .id(artist.getId())
                 .name(artist.getName())
                 .bigPictureUrl(artist.getBigPictureUrl())
                 .mediumPictureUrl(artist.getMediumPictureUrl())
@@ -17,6 +18,20 @@ public class DTOMapper {
                 .monthlyListeners(artist.getMonthlyListeners())
                 .numberOfFans(artist.getNumberOfFans())
                 .biography(artist.getBiography())
+                .build();
+    }
+    public static DetailArtistDTO mapToDetailArtistDTO(Artist artist) {
+        return DetailArtistDTO.builder()
+                .id(artist.getId())
+                .name(artist.getName())
+                .bigPictureUrl(artist.getBigPictureUrl())
+                .mediumPictureUrl(artist.getMediumPictureUrl())
+                .smallPictureUrl(artist.getSmallPictureUrl())
+                .monthlyListeners(artist.getMonthlyListeners())
+                .numberOfFans(artist.getNumberOfFans())
+                .biography(artist.getBiography())
+                .tracks(artist.getTracks().stream().map(DTOMapper::mapToTrackDTO).toList())
+                .albums(artist.getAlbums().stream().map(DTOMapper::mapToAlbumDTO).toList())
                 .build();
     }
 
@@ -32,6 +47,7 @@ public class DTOMapper {
                 .duration(track.getDuration())
                 .trackRank(track.getTrackRank())
                 .trackPreviewUrl(track.getTrackPreviewUrl())
+                .artist(mapToArtistDTO(track.getArtist()))
                 .build();
     }
 
@@ -102,4 +118,6 @@ public class DTOMapper {
                 .savedAlbums(user.getSavedAlbums().stream().map(DTOMapper::mapToAlbumDTO).collect(Collectors.toSet()))
                 .build();
     }
+
+
 }

@@ -1,8 +1,8 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
+import { Tabs } from "expo-router";
+import React from "react";
+import { StyleSheet, View, Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 
 export default function TabsLayout() {
   return (
@@ -17,21 +17,21 @@ export default function TabsLayout() {
             style={StyleSheet.absoluteFill}
           />
         ),
-        tabBarActiveTintColor: '#9FE870',
-        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+        tabBarActiveTintColor: "#9FE870",
+        tabBarInactiveTintColor: "rgba(255, 255, 255, 0.5)",
         tabBarShowLabel: false,
         tabBarItemStyle: styles.tabItem,
       }}
     >
       <Tabs.Screen
-        name="home/index"
+        name="home"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? "home" : "home-outline"} 
-                size={32} 
-                color={color} 
+              <Ionicons
+                name={focused ? "home" : "home-outline"}
+                size={32}
+                color={color}
                 style={styles.icon}
               />
               {focused && <View style={styles.activeIndicator} />}
@@ -44,9 +44,9 @@ export default function TabsLayout() {
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? "search" : "search-outline"} 
-                size={32} 
+              <Ionicons
+                name={focused ? "search" : "search-outline"}
+                size={32}
                 color={color}
                 style={styles.icon}
               />
@@ -60,9 +60,9 @@ export default function TabsLayout() {
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? "musical-notes" : "musical-notes-outline"} 
-                size={32} 
+              <Ionicons
+                name={focused ? "musical-notes" : "musical-notes-outline"}
+                size={32}
                 color={color}
                 style={styles.icon}
               />
@@ -71,14 +71,15 @@ export default function TabsLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
         name="library"
         options={{
           tabBarIcon: ({ color, focused }) => (
             <View style={styles.iconContainer}>
-              <Ionicons 
-                name={focused ? "library" : "library-outline"} 
-                size={32} 
+              <Ionicons
+                name={focused ? "library" : "library-outline"}
+                size={32}
                 color={color}
                 style={styles.icon}
               />
@@ -93,19 +94,19 @@ export default function TabsLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 40,
     left: 20,
     right: 20,
     height: 70,
-    backgroundColor: 'rgba(32, 33, 35, 0.85)',
+    backgroundColor: "rgba(32, 33, 35, 0.85)",
     borderRadius: 40,
     elevation: 0,
     borderTopWidth: 0,
     paddingVertical: 20,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: 4,
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 8,
-        backgroundColor: 'rgba(32, 33, 35, 0.95)',
+        backgroundColor: "rgba(32, 33, 35, 0.95)",
       },
     }),
   },
@@ -123,11 +124,11 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   iconContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: 70,
     height: 70,
-    position: 'relative',
+    position: "relative",
     marginBottom: 7,
     borderRadius: 35,
   },
@@ -135,11 +136,11 @@ const styles = StyleSheet.create({
     transform: [{ scale: 1 }],
   },
   activeIndicator: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
     borderRadius: 35,
-    backgroundColor: '#9FE870',
+    backgroundColor: "#9FE870",
     opacity: 0.2,
   },
-}); 
+});

@@ -1,29 +1,34 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 interface ArtistComponentProps {
-  imageUrl: string;
   name: string;
+  bigPictureUrl?: string;
+  mediumPictureUrl: string;
+  smallPictureUrl: string;
   onPress?: () => void;
 }
 
-export default function ArtistComponent({ imageUrl, name, onPress }: ArtistComponentProps) {
+export default function ArtistComponent({
+  name,
+  onPress,
+  mediumPictureUrl,
+}: ArtistComponentProps) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
-        <Image 
-          source={{ uri: imageUrl }} 
-          style={styles.image}
-        />
+        <Image source={{ uri: mediumPictureUrl }} style={styles.image} />
       </View>
-      <Text style={styles.name} numberOfLines={1}>{name}</Text>
+      <Text style={styles.name} numberOfLines={1}>
+        {name}
+      </Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     width: 80,
     marginRight: 15,
   },
@@ -31,16 +36,16 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 8,
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   name: {
-    color: 'white',
+    color: "white",
     fontSize: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
-}); 
+});

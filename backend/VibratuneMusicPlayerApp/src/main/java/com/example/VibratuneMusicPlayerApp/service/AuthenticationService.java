@@ -129,6 +129,19 @@ public class AuthenticationService {
             throw new RuntimeException("Invalid authentication principal");
         }
     }
+
+    public void resendVerificationResetPasswordCode(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setVerificationCode(generateVerificationCode());
+            user.setVerificationCodeExpiresAt(LocalDateTime.now().plusHours(1));
+            sendVerificationEmail(user);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
     public void resendVerificationCode(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
@@ -255,8 +268,12 @@ public class AuthenticationService {
     }
     public void verifyUserResetPassword(ResetPasswordDTO resetPasswordDTO){
         Optional<User>  optionalUser =  userRepository.findByEmail(resetPasswordDTO.getEmail());
+
         if(optionalUser.isPresent()){
+
             User user =  optionalUser.get();
+            System.out.println(user.getUsername());
+            System.out.println(user.getVerificationCodeExpiresAt());
             if(user.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())){
                 throw new RuntimeException("Reset Password Verification Code has expired");
             }else{

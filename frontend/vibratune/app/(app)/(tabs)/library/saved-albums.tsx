@@ -1,26 +1,58 @@
-import React from 'react';
-import { StyleSheet, FlatList, View, SafeAreaView, Text, TouchableOpacity, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import Screen from '../../../../src/components/Screen';
+import React from "react";
+import {
+  StyleSheet,
+  FlatList,
+  View,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import Screen from "../../../../src/components/Screen";
 
 // Using the same mock data from library/index.tsx
 const savedAlbums = [
-  { id: '1', title: 'After Hours', artist: 'The Weeknd', imageUrl: 'https://picsum.photos/204' },
-  { id: '2', title: 'Midnights', artist: 'Taylor Swift', imageUrl: 'https://picsum.photos/205' },
-  { id: '3', title: 'Renaissance', artist: 'Beyoncé', imageUrl: 'https://picsum.photos/206' },
+  {
+    id: "1",
+    title: "After Hours",
+    artist: "The Weeknd",
+    imageUrl: "https://picsum.photos/204",
+  },
+  {
+    id: "2",
+    title: "Midnights",
+    artist: "Taylor Swift",
+    imageUrl: "https://picsum.photos/205",
+  },
+  {
+    id: "3",
+    title: "Renaissance",
+    artist: "Beyoncé",
+    imageUrl: "https://picsum.photos/206",
+  },
 ];
 
-function AlbumCard({ title, artist, imageUrl }: { title: string; artist: string; imageUrl: string }) {
+function AlbumCard({
+  title,
+  artist,
+  imageUrl,
+}: {
+  title: string;
+  artist: string;
+  imageUrl: string;
+}) {
   return (
     <TouchableOpacity style={styles.albumCard} onPress={() => {}}>
-      <Image 
-        source={{ uri: imageUrl }} 
-        style={styles.albumImage}
-      />
+      <Image source={{ uri: imageUrl }} style={styles.albumImage} />
       <View style={styles.albumInfo}>
-        <Text style={styles.albumTitle} numberOfLines={1}>{title}</Text>
-        <Text style={styles.albumArtist} numberOfLines={1}>{artist}</Text>
+        <Text style={styles.albumTitle} numberOfLines={1}>
+          {title}
+        </Text>
+        <Text style={styles.albumArtist} numberOfLines={1}>
+          {artist}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -33,8 +65,8 @@ export default function SavedAlbumsScreen() {
     <Screen>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.header}>
-          <TouchableOpacity 
-            style={styles.backButton} 
+          <TouchableOpacity
+            style={styles.backButton}
             onPress={() => router.back()}
           >
             <Ionicons name="chevron-back" size={28} color="#fff" />
@@ -50,7 +82,7 @@ export default function SavedAlbumsScreen() {
               imageUrl={item.imageUrl}
             />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           numColumns={2}
           columnWrapperStyle={styles.albumRow}
           contentContainerStyle={styles.listContent}
@@ -66,8 +98,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 50,
     paddingHorizontal: 20,
     paddingVertical: 15,
@@ -77,22 +109,22 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#fff',
+    fontWeight: "700",
+    color: "#fff",
   },
   listContent: {
     padding: 20,
     paddingBottom: 100,
   },
   albumRow: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   albumCard: {
-    width: '48%',
+    width: "48%",
   },
   albumImage: {
-    width: '100%',
+    width: "100%",
     aspectRatio: 1,
     borderRadius: 12,
     marginBottom: 8,
@@ -102,12 +134,12 @@ const styles = StyleSheet.create({
   },
   albumTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
+    fontWeight: "600",
+    color: "#fff",
     marginBottom: 4,
   },
   albumArtist: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: "rgba(255, 255, 255, 0.7)",
   },
-}); 
+});
