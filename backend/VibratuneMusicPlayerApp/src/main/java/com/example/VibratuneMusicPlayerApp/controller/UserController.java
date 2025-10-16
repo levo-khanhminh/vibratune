@@ -6,6 +6,10 @@ import com.example.VibratuneMusicPlayerApp.model.User;
 import com.example.VibratuneMusicPlayerApp.service.AuthenticationService;
 import com.example.VibratuneMusicPlayerApp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +24,19 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final AuthenticationService authenticationService;
-    @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return  ResponseEntity.ok(userService.getAllUsers());
+    @GetMapping
+    public Page<User> getAllUsers(
+            @RequestParam(name ="page" , defaultValue = "0")  int page
+            , @RequestParam(name="size", defaultValue="5") int size,
+            @RequestParam(defaultValue = "id,asc")  String [] sort
+
+    ){
+        Sort.Order  sortOrder  =  new Sort.Order(
+                sort[1].equalsIgnoreCase("DESC") ?  Sort.Direction.DESC :  Sort.Direction.ASC, sort[0]
+        );
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrder));
+
+        return  this.userService.getAllUsers(pageable);
     }
     @GetMapping("/me")
     public ResponseEntity<?> authenticatedUser() {

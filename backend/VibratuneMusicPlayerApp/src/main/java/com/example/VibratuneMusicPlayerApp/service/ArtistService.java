@@ -7,7 +7,9 @@ import com.example.VibratuneMusicPlayerApp.DTO.DetailArtistDTO;
 import com.example.VibratuneMusicPlayerApp.model.Artist;
 import com.example.VibratuneMusicPlayerApp.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +28,8 @@ public class ArtistService {
         Artist artist =  this.artistRepository.findById(id).orElseThrow();
         return DTOMapper.mapToDetailArtistDTO(artist);
     }
-    public List<ArtistDTO>  getAllArtists(){
-        return this.artistRepository.findAll().stream().map(artist  ->
-                        DTOMapper.mapToArtistDTO(artist)
-                ).toList();
+    public Page<ArtistDTO> getAllArtists(Pageable pageable){
+        return this.artistRepository.findAll(pageable).map(DTOMapper::mapToArtistDTO);
     }
 
     public List<ArtistDTO> getTopMonthlyArtists(int count) {
@@ -37,7 +37,7 @@ public class ArtistService {
                 .findAll(PageRequest.of(0, count, Sort.by(Sort.Direction.DESC, "monthlyListeners")))
                 .getContent()
                 .stream()
-                .map(artist -> DTOMapper.mapToArtistDTO(artist)
+                .map(DTOMapper::mapToArtistDTO
                 )
                 .toList();
     }

@@ -5,7 +5,9 @@ import com.example.VibratuneMusicPlayerApp.DTO.TrackDTO;
 import com.example.VibratuneMusicPlayerApp.model.Track;
 import com.example.VibratuneMusicPlayerApp.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,8 @@ public class TrackService {
     public Track getTrack(Long id){
         return this.trackRepository.findById(id).orElse(null);
     }
-    public List<TrackDTO> getAllTracks(){
-      return  this.trackRepository.findAll().stream().map(DTOMapper::mapToTrackDTO).toList();
+    public Page<TrackDTO> getAllTracks(Pageable pageable){
+      return  this.trackRepository.findAll(pageable).map(DTOMapper::mapToTrackDTO);
     }
 
     public List<TrackDTO> getTopTracks(int topRank){

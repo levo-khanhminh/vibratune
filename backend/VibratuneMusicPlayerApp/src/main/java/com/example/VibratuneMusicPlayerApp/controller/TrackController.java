@@ -4,6 +4,10 @@ import com.example.VibratuneMusicPlayerApp.DTO.TrackDTO;
 import com.example.VibratuneMusicPlayerApp.model.Track;
 import com.example.VibratuneMusicPlayerApp.repository.TrackRepository;
 import com.example.VibratuneMusicPlayerApp.service.TrackService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +20,17 @@ public class TrackController {
         this.trackService=trackService;
     }
 
-    @GetMapping("/")
-    public List<TrackDTO>  getAllTracks(){
-        return this.trackService.getAllTracks();
+    @GetMapping
+    public Page<TrackDTO> getAllTracks(
+         @RequestParam(name ="page" , defaultValue = "0")  int page
+        , @RequestParam(name="size", defaultValue="5") int size,
+           @RequestParam(defaultValue = "id,asc")  String [] sort
+    ){
+        Sort.Order  sortOrder  =  new Sort.Order(
+                sort[1].equalsIgnoreCase("DESC") ?  Sort.Direction.DESC :  Sort.Direction.ASC, sort[0]
+        );
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrder));
+        return this.trackService.getAllTracks(pageable);
     }
 
     @GetMapping("/{id}")

@@ -13,6 +13,8 @@ import com.example.VibratuneMusicPlayerApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,8 +34,8 @@ public class UserService implements UserDetailsService {
     private final TrackRepository trackRepository;
     private final PlaylistRepository playlistRepository;
     private final AlbumRepository albumRepository;
-    public List<User>  getAllUsers(){
-        return this.userRepository.findAll();
+    public Page<User> getAllUsers(Pageable pageable){
+        return this.userRepository.findAll(pageable);
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

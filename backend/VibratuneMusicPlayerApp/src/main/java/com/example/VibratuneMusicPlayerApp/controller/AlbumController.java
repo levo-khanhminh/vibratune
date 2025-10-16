@@ -5,6 +5,10 @@ import com.example.VibratuneMusicPlayerApp.model.Album;
 import com.example.VibratuneMusicPlayerApp.service.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +20,21 @@ import java.util.List;
 public class AlbumController {
     @Autowired
     private  final AlbumService albumService;
-    @GetMapping("/")
-    public ResponseEntity<List<AlbumDTO>> getAllAlbums() {
-        return ResponseEntity.ok(albumService.getAllAlbums());
+    @GetMapping
+    public Page<AlbumDTO> getAllAlbums(@RequestParam(name="page", defaultValue="0")  int page ,
+                             @RequestParam(name="size", defaultValue="1") int size, @RequestParam(defaultValue="id,asc") String[] sort
+    ) {
+
+        Sort.Order  sortOrder  =  new Sort.Order(
+                sort[1].equalsIgnoreCase("DESC") ?  Sort.Direction.DESC :  Sort.Direction.ASC, sort[0]
+        );
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrder));
+        return albumService.getAllAlbums(pageable);
     }
+
+
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getAlbumById(@PathVariable(name ="id") Long id){
         try {
