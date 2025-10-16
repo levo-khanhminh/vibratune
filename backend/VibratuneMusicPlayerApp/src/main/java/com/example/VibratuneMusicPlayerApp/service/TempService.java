@@ -26,8 +26,8 @@ public class TempService {
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setVerified(true);
-        Role role  = roleRepository.findById(1l).orElseThrow();
-        Role aristRole =  roleRepository.findById(4l).orElseThrow();
+        Role role  = roleRepository.findById(1L).orElseThrow();
+        Role aristRole =  roleRepository.findById(4L).orElseThrow();
         user.setRoles(List.of(role,aristRole));
         userRepository.save(user);
         return user;

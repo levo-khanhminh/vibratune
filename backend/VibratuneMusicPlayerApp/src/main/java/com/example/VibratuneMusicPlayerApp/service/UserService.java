@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
     private final PlaylistRepository playlistRepository;
     private final AlbumRepository albumRepository;
     public List<User>  getAllUsers(){
-        return (List<User>) this.userRepository.findAll();
+        return this.userRepository.findAll();
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
