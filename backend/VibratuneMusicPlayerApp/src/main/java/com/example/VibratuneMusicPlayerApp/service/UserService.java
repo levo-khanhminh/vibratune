@@ -13,6 +13,7 @@ import com.example.VibratuneMusicPlayerApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
@@ -34,6 +35,7 @@ public class UserService implements UserDetailsService {
     private final TrackRepository trackRepository;
     private final PlaylistRepository playlistRepository;
     private final AlbumRepository albumRepository;
+    @Cacheable("allUsers")
     public Page<User> getAllUsers(Pageable pageable){
         return this.userRepository.findAll(pageable);
     }

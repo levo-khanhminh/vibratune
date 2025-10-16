@@ -6,14 +6,13 @@ import com.example.VibratuneMusicPlayerApp.model.User;
 import com.example.VibratuneMusicPlayerApp.service.AuthenticationService;
 import com.example.VibratuneMusicPlayerApp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class UserController {
                 sort[1].equalsIgnoreCase("DESC") ?  Sort.Direction.DESC :  Sort.Direction.ASC, sort[0]
         );
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrder));
-
+        System.out.println("Querying from the DB.................!!!!");
         return  this.userService.getAllUsers(pageable);
     }
     @GetMapping("/me")

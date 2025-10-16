@@ -2,14 +2,13 @@ package com.example.VibratuneMusicPlayerApp.DTO;
 
 import com.example.VibratuneMusicPlayerApp.Enum.Gender;
 import com.example.VibratuneMusicPlayerApp.model.Genre;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProfileDTO {
     private Long id;
     private String fullName;

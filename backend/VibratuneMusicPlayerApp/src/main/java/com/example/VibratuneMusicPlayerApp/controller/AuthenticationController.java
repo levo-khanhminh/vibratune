@@ -9,6 +9,8 @@ import com.example.VibratuneMusicPlayerApp.service.AuthenticationService;
 import com.example.VibratuneMusicPlayerApp.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,7 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @PostMapping("/signup")
+    @CacheEvict(value="allUsers", allEntries = true)
     public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDto) {
        try{
            User registeredUser = authenticationService.signUp(registerUserDto);

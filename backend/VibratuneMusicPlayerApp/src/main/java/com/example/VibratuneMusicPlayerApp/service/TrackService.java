@@ -5,6 +5,7 @@ import com.example.VibratuneMusicPlayerApp.DTO.TrackDTO;
 import com.example.VibratuneMusicPlayerApp.model.Track;
 import com.example.VibratuneMusicPlayerApp.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,8 +28,13 @@ public class TrackService {
     public Track getTrack(Long id){
         return this.trackRepository.findById(id).orElse(null);
     }
-    public Page<TrackDTO> getAllTracks(Pageable pageable){
-      return  this.trackRepository.findAll(pageable).map(DTOMapper::mapToTrackDTO);
+
+
+    @Cacheable("allTracks")
+    public List<TrackDTO> getAllTracks(Pageable pageable){
+        System.out.println("Querying from the DB ................");
+
+      return  this.trackRepository.findAll(pageable).map(DTOMapper::mapToTrackDTO).getContent();
     }
 
     public List<TrackDTO> getTopTracks(int topRank){

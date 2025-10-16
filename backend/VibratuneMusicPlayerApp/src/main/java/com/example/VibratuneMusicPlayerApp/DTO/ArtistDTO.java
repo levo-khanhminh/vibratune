@@ -1,11 +1,17 @@
 package com.example.VibratuneMusicPlayerApp.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @Builder
-public class ArtistDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ArtistDTO implements Serializable {
     private Long id;
     private String name;
     private String  biography;
